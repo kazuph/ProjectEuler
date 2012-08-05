@@ -7,3 +7,16 @@ def sum_of_even_fib (max)
 end
 p sum_of_even_fib(10) # => 10
 p sum_of_even_fib(4_000_000) # => 350704366
+__END__
+ただしここまで気持ち悪く書かなくても以下のページの方法が自然だし単純
+http://blog.livedoor.jp/guratan__/archives/3405066.html
+```
+MAX = 400_0000
+sum = 0
+a,  b = 1,  1
+while a < MAX
+  sum = sum + a if a.even?
+  a,  b = a + b,  a
+end
+puts sum
+```
