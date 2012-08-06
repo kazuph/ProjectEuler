@@ -7,14 +7,14 @@ def factorization (num)
   factor << 3 if num % 3 == 0
   (4..num).each do |prime|
     if !(2..Math.sqrt(prime)).any?{|n| prime % n == 0}
-      p factor << prime if num % prime == 0
+      factor << prime if num % prime == 0
       if factor.inject(1) {|p, i| p * i} == num
         break
       end
     end
   end
-  # p factor
+  return factor
 end
-factorization(13195)
-factorization(600851475143)
+p factorization(13195) # => [5, 7, 13, 29]
+p factorization(600851475143) # => [71, 839, 1471, 6857]
 
