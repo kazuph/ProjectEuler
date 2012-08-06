@@ -15,6 +15,10 @@ def factorization (num)
   end
   return factor
 end
-p factorization(13195) # => [5, 7, 13, 29]
-p factorization(600851475143) # => [71, 839, 1471, 6857]
+# p factorization(13195) # => [5, 7, 13, 29]
+# p factorization(600851475143) # => [71, 839, 1471, 6857]
 
+puts
+# 最大のものっていう指定を忘れていた
+p factorization(13195).max # => 29
+p factorization(600851475143).max # => 6857
