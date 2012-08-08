@@ -16,11 +16,22 @@ def sum_inject (max, num1, num2)
     (n % num1 == 0 || n % num2 == 0) ? sum + n : sum
   }
 end
+
+def sum_select_inject (max, num1, num2)
+  return (1..(max - 1)).select {|n|n % num1 == 0 || n % num2 == 0}.inject(&:+)
+end
+
 # while文を使って書いてみる
 p sum_while(10, 3, 5) # => 23
 p sum_while(1000, 3, 5) # => 233168
 
-puts
 # inject文を使って書いてみる
 p sum_inject(10, 3, 5) # => 23
 p sum_inject(1000, 3, 5) # => 233168
+
+# select文もかませたinject文を使って書いてみる
+p sum_select_inject(10, 3, 5) # => 23
+p sum_select_inject(1000, 3, 5) # => 233168
+
+# ワンライナー
+# $ ruby -e 'p (1..999).select{|n|n%3==0||n%5==0}.inject(:+)'
