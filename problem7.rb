@@ -2,8 +2,8 @@
 # 10001 番目の素数を求めよ。
 def prime?(num, ary)
   for n in ary
-    if n <= Math.sqrt(num)
-      return false if (num % n).zero?
+    if n * n  <= num
+      return false if num % n == 0
     else
       break
     end
