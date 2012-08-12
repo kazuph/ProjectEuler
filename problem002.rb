@@ -8,7 +8,7 @@ def sum_of_even_fib (max)
   }.select{|n|n % 2 == 0}.inject(0){&:+}
 end
 p sum_of_even_fib(10) # => 10
-p sum_of_even_fib(4_000_000) # => 4613732
+p sum_of_even_fib(4_000_000)
 __END__
 ただしここまで気持ち悪く書かなくても以下のページの方法が自然だし単純
 http://blog.livedoor.jp/guratan__/archives/3405066.html
