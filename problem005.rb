@@ -19,3 +19,6 @@ while true
   n += 20
 end
 p ((Time.now - t)*1000).to_i # => 2秒程度
+
+# ここまでやって実はRubyには最小公倍数を求めるメソッドがあってそれを使うと一瞬で求められることを発見orz
+p (1..20).inject(1) {|result, n| result.lcm n}
