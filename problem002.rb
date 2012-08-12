@@ -5,7 +5,7 @@
 def sum_of_even_fib (max)
   return (0..1/0.0).inject([1, 2]){|fib, i|
     fib[i] + fib[i + 1] < max ? fib << fib[i] + fib[i + 1] : (break fib)
-  }.select{|n|n % 2 == 0}.inject(0){&:+}
+  }.select{|n|n % 2 == 0}.inject(&:+)
 end
 p sum_of_even_fib(10) # => 10
 p sum_of_even_fib(4_000_000)
