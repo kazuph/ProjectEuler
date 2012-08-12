@@ -3,4 +3,18 @@
 # を満たす数の組である.
 # 例えば,  3² + 4² = 9 + 16 = 25 = 5²である.
 # a + b + c = 1000となるピタゴラスの三つ組が一つだけ存在する. このa,b,cの積を計算しなさい.
-998.downto(3){|c|(c - 1).downto(2){|b|(b-1).downto(1){|a|p a * b * c if a + b + c == 1000 && a**2 + b**2 == c ** 2}}}
+t = Time.now
+catch(:finish) {
+  998.downto(3){|c|
+    (1000 - c - 1).downto(2){|b|
+      # c とbが決まればaは一意に決まる
+      a = 1000 - b - c
+      break if a >= b
+      if a*a + b*b == c*c
+        p a * b * c
+        throw :finish
+      end
+    }
+  }
+}
+p ((Time.now - t)*1000).to_i
