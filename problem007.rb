@@ -1,13 +1,12 @@
 # 素数を小さい方から6つ並べると 2,  3,  5,  7,  11,  13 であり、6番目の素数は 13 である。
 # 10001 番目の素数を求めよ。
+t = Time.now
 max = Integer(ARGV.shift || 10001)
+# max = Integer(ARGV.shift || 2_000_000)
 def prime?(num, ary)
   ary.each do |n|
-    if n * n  <= num
-      return false if num % n == 0
-    else
-      break
-    end
+    break if n * n  > num
+    return false if num % n == 0
   end
   return true
 end
@@ -25,7 +24,7 @@ while  prime_ary.count < max
   end
 end
 p prime_ary[-1]
-
+p ((Time.now - t)*1000).to_i
 __END__
 # ネットの情報と藤堂さんのコードを元にウルトラ爆速にしたった
 n = Integer(ARGV.shift || 10001)

@@ -1,12 +1,10 @@
 # 10以下の素数の和は2 + 3 + 5 + 7 = 17である.
 # 200万以下の全ての素数の和を計算しなさい.
+t = Time.now
 def prime?(num, ary)
-  for n in ary
-    if n * n  <= num
-      return false if num % n == 0
-    else
-      break
-    end
+  ary.each do |n|
+    break if n * n  > num
+    return false if num % n == 0
   end
   return true
 end
@@ -25,3 +23,4 @@ while  prime_ary[-1] < 2_000_000
 end
 prime_ary.pop
 p prime_ary.inject(:+)
+p ((Time.now - t)*1000).to_i
