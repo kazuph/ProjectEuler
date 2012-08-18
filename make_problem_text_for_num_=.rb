@@ -1,12 +1,16 @@
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
-# オイラーの問題を取得するように変更
-probrem_num = ARGV[0] || "19"
-exit if probrem_num == ""
+probrem_num = ARGV[0] || ""
+if probrem_num !~ /\d?\d?\d/
+  print "usage: ruby make_problem_text_for_num_.rb {Problem Number}\n"
+  print "ex.  : ruby make_problem_text_for_num_.rb 12"
+  exit
+end
+
 p filename = "problem" + "%03d" % probrem_num + ".rb"
 if File.exist?(filename)
-  puts "exists file."
+  puts "File already exists."
   exit
 end
 
@@ -14,6 +18,8 @@ doc = Nokogiri::HTML(open("http://odz.sakura.ne.jp/projecteuler/index.php?cmd=re
 doc.css("#body").each do |body|
   File.open(filename, "w") do |file|
     puts body.text
+    file.write "#!/usr/bin/env ruby\n"
+    file.write "# encoding : utf-8\n"
     file.write body.text.gsub(/^(.*)$/){"# " + $1}
   end
 end
