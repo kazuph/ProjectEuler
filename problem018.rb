@@ -27,16 +27,18 @@ Data
 # 注: ここではたかだか 16384 通りのルートしかないので、すべてのパターンを試すこともできる。Problem 67 は同じ問題だが100行あるので、総当りでは解けない。もっと賢い方法が必要である。
 @ary = data.split(/\n/).map{|n|n.split(/ /).map(&:to_i)}
 @route = []
+# 再帰で辿る
 def search (list, position)
-  list << @ary[position[0]][position[1]]
-  if @ary.length == (n - 1)
+  if @ary.length == (position[0] + 1)
     @route << list
+    list = []
+    position = [0, 0]
     return
   end
-  (0..@ary[n + 1].length).each do |m|
-    list << ary[n + 1][m]
+  (position[1]..(position[1]+1)).each do |m|
+    search(list + [@ary[position[0] + 1][m]], [position[0] + 1, m])
   end
-  search(list, n + 1)
 end
-search([], [0, 0])
+search([75], [0, 0])
+p @route.map{|n|n.inject(&:+)}.max
 
