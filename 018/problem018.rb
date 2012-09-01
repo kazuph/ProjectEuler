@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # encoding : utf-8
+require 'benchmark'
 # Problem 18  †
 # 以下の三角形の頂点から下まで移動するとき、その数値の合計の最大値は23になる。
 # 37 4
@@ -25,21 +26,69 @@ data =<<Data
 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 Data
 # 注: ここではたかだか 16384 通りのルートしかないので、すべてのパターンを試すこともできる。Problem 67 は同じ問題だが100行あるので、総当りでは解けない。もっと賢い方法が必要である。
-t = Time.now
-@ary = data.split(/\n/).map{|n|n.split(/ /).map(&:to_i)}
-@route = []
-# 再帰で辿る
-def search (list, position)
-  if @ary.length == (position[0] + 1)
-    @route << list
-    list = []
-    position = [0, 0]
-    return
-  end
-  (position[1]..(position[1]+1)).each do |m|
-    search(list + [@ary[position[0] + 1][m]], [position[0] + 1, m])
-  end
+Benchmark.bm do |x|
+  x.report(" saiki ") {
+    @ary = data.split(/\n/).map{|n|n.split(/ /).map(&:to_i)}
+    @route = []
+    # 再帰で辿る
+    def search (list, position)
+      if @ary.length == (position[0] + 1)
+        @route << list
+        list = []
+        position = [0, 0]
+        return
+      end
+      (position[1]..(position[1]+1)).each do |m|
+        search(list + [@ary[position[0] + 1][m]], [position[0] + 1, m])
+      end
+    end
+    search([75], [0, 0])
+    p @route.map{|n|n.inject(&:+)}.max
+  }
+  x.report(" sum ") {
+    @ary = data.split(/\n/).map{|n| n.split(/ /).map(&:to_i)}
+    (@ary.length - 2).downto(0) do |j|
+      @ary[j].each_index do |i|
+        @ary[j][i] += @ary[j + 1][i..(i+1)].max
+      end
+      @ary.pop
+      # @ary.map{|row|p row}
+    end
+    p @ary[0][0]
+  }
+  x.report(" sum no pop") {
+    ary = data.each_line.map{|n| n.split(/ /).map(&:to_i)}
+    (ary.length - 2).downto(0) do |j|
+      ary[j].each_index do |i|
+        ary[j][i] += ary[j + 1][i..(i+1)].max
+      end
+      # @ary.map{|row|p row}
+    end
+    p ary[0][0]
+  }
+  x.report(" sum no pop and while") {
+    ary = data.each_line.map{|n| n.split(/ /).map(&:to_i)}
+    j = ary.length - 2
+    while j >= 0
+      ary[j].each_index do |i|
+        ary[j][i] += ary[j + 1][i..(i+1)].max
+      end
+      j -= 1
+      # ary.pop
+      # ary.map{|row|p row}
+    end
+    p ary[0][0]
+  }
+  x.report(" sum pop and while") {
+    ary = data.each_line.map{|n| n.split(/ /).map(&:to_i)}
+    while ary.length > 1
+      ary[-2].each_index do |i|
+        ary[-2][i] += ary[-1][i..(i+1)].max
+      end
+      ary.pop
+      # ary.map{|row|p row}
+    end
+    p ary[0][0]
+  }
 end
-search([75], [0, 0])
-p @route.map{|n|n.inject(&:+)}.max
-p Time.now - t
+

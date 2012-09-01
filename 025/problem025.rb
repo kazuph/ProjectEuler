@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 # encoding : utf-8
+require 'benchmark'
 # Problem 25  †
 # フィボナッチ数列は以下の漸化式で定義される:
 # Fn = Fn-1 + Fn-2, ただし F1 = 1, F2 = 1.
@@ -17,22 +18,42 @@
 # F11 = 89
 # F12 = 14412番目の項, F12が3桁になる最初の項である.
 # 1000桁になる最初の項の番号を答えよ.
-# t = Time.now
-max = 10 ** 999
-p (0..1/0.0).inject([1, 1]){|fib, i|
-  fib << fib[i] + fib[i + 1]
-  break fib if fib[-1] > max
-  fib
-}.count
-# p Time.now - t
+Benchmark.bm do |x|
+  x.report(" inject ") {
+    max = 10 ** 999
+    p((0..1/0.0).inject([1, 1]){|fib, i|
+      fib << fib[i] + fib[i + 1]
+      break fib if fib[-1] > max
+      fib
+    }.count)
+  }
+  x.report(" while ") {
+    max = 10 ** 999
+    a , b = 1, 1
+    count = 2
+    while b < max
+      count += 1
+      a , b = b , a + b
+    end
+    p count
+  }
+  x.report(" higo ") {
+    f2 = 1
+    f1 = 1
+    f = 2
+    i = 3
+    max = 10 ** 999
+    while f < max
+      f2 = f1
+      f1 = f
+      f = f2 + f1
+      i += 1
+    end
+    #p f
+    p i
+  }
+end
 
-# a , b = 1, 1
-# count = 2
-# while b < max
-#   count += 1
-#   a , b = b , a + b
-# end
-# p count
 
 # 一般項を使うぜ
 # n = 1
