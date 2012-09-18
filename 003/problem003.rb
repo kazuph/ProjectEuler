@@ -87,10 +87,16 @@ Benchmark.bm do |x|
     # 最大の素因数が求まればいいので配列に入れるのをやめた
     # がそんなに速くはならなかった
     def factorization (num)
+      origin = num
       max = 0
       # 2, 3, 5
       [2, 3, 5].each do |prime|
-        num % prime == 0 && max = prime && num /= prime
+        break if prime * prime > num
+        if num % prime == 0
+          max = prime
+          num /= prime
+        end
+        return max if num == 1
       end
       # 7以降の素数候補で割る
       n = 0
@@ -98,12 +104,18 @@ Benchmark.bm do |x|
         n += 1
         prime = 6 * n + 1
         break if prime * prime > num
-        num % prime == 0 && max = prime && num /= prime
+        if num % prime == 0
+          max = prime
+          num /= prime
+        end
         prime += 4
         break if prime * prime > num
-        num % prime == 0 && max = prime && num /= prime
+        if num % prime == 0
+          max = prime
+          num /= prime
+        end
       end
-      max = num
+      max = num if origin == num
       return max
     end
     p factorization(600851475143)
