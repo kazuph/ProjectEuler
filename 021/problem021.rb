@@ -11,8 +11,8 @@ def factor(n)
   count = 1
   while true
     factor << count if n % count == 0
+    break if 2 * count >= n
     count += 1
-    break if count >= n
   end
   return factor
 end

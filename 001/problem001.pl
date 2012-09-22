@@ -19,4 +19,4 @@ sub sum  {
 }
 print sum(1000, 3, 5), "\n";
 my $end = [gettimeofday];
-printf "time = %.3f", tv_interval($start, $end);
+printf "time = %.10f", tv_interval($start, $end);
