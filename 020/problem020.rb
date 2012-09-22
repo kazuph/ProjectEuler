@@ -9,4 +9,14 @@
 # である。
 # では、100! の各桁の数字の合計を求めよ。
 # p (1..10).inject(:*).to_s.split(//).map(&:to_i).inject(:+)
-p (1..100).inject(:*).to_s.split(//).map(&:to_i).inject(:+)
+require 'benchmark'
+result = {}
+Benchmark.bm do |x|
+  result[:slow] = x.report("slow ") {
+    sum = 0;(1..100).inject(:*).to_s.each_byte{|byte| sum+= byte -48};p sum;
+  }
+  result[:fast] = x.report("fast ") {
+    p (1..100).inject(&:*).to_s.split(//).map{|s|s.to_i}.inject(&:+)
+  }
+end
+result.sort_by{|key, value| value.real}.map{|key, value| print "code : #{key} = " + "%0.4f" % (value.real * 1000) + "[msec]\n"}
